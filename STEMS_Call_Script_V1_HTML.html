@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEMS Health — Inbound Leads Call Script</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #1A1A2E;
+    --navy-deep: #111121;
+    --teal:      #0B7E7A;
+    --teal-mid:  #0d9490;
+    --lt-teal:   #C5E8E7;
+    --pale-teal: #E8F5F5;
+    --off-white: #F5F3EE;
+    --warm-white:#FAF9F6;
+    --mid-gray:  #6B7280;
+    --light-gray:#D1D5DB;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--navy);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .sidebar { display: none; }
+    .main { margin: 0; padding: 2rem; }
+    .step-section { break-inside: avoid; }
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--navy-deep);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 2rem 0;
+  }
+
+  .sidebar-logo {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(197,232,231,0.15);
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-logo .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--lt-teal);
+    text-transform: uppercase;
+  }
+
+  .sidebar-logo .doc-label {
+    font-size: 0.68rem;
+    color: var(--mid-gray);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .nav-group { padding: 0.75rem 0; }
+
+  .nav-group-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    padding: 0 1.5rem;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 0.45rem 1.5rem;
+    font-size: 0.82rem;
+    color: rgba(245,243,238,0.65);
+    text-decoration: none;
+    transition: all 0.18s ease;
+    border-left: 2px solid transparent;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .nav-item:hover,
+  .nav-item.active {
+    color: var(--lt-teal);
+    border-left-color: var(--teal);
+    background: rgba(11,126,122,0.08);
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 1.25rem 1.5rem 0;
+    border-top: 1px solid rgba(197,232,231,0.1);
+    font-size: 0.7rem;
+    color: var(--mid-gray);
+    line-height: 1.5;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    max-width: 860px;
+    padding: 3rem 3.5rem 5rem;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    border-radius: 3px;
+    padding: 2.5rem 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--lt-teal), var(--teal));
+  }
+
+  .hero::after {
+    content: 'STEMS';
+    position: absolute;
+    right: -1.5rem;
+    bottom: -1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem;
+    font-weight: 600;
+    color: rgba(11,126,122,0.07);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--off-white);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .hero-meta {
+    font-size: 0.78rem;
+    color: rgba(197,232,231,0.6);
+    letter-spacing: 0.04em;
+  }
+
+  .hero-meta span {
+    margin-right: 1.5rem;
+  }
+
+  /* ── STEP SECTIONS ── */
+  .step-section {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.45s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-section:nth-child(1) { animation-delay: 0.05s; }
+  .step-section:nth-child(2) { animation-delay: 0.1s; }
+  .step-section:nth-child(3) { animation-delay: 0.15s; }
+  .step-section:nth-child(4) { animation-delay: 0.2s; }
+  .step-section:nth-child(5) { animation-delay: 0.25s; }
+  .step-section:nth-child(6) { animation-delay: 0.3s; }
+  .step-section:nth-child(7) { animation-delay: 0.35s; }
+  .step-section:nth-child(8) { animation-delay: 0.4s; }
+
+  .section-header {
+    background: var(--navy);
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .step-badge {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--off-white);
+    letter-spacing: 0.01em;
+  }
+
+  .section-body {
+    background: white;
+    border: 1px solid var(--light-gray);
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    padding: 1.5rem 1.75rem;
+  }
+
+  /* ── SCRIPT LINES ── */
+  .script-block {
+    margin: 0.75rem 0;
+  }
+
+  .script-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .script-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.6;
+    padding: 0.75rem 1rem;
+    background: var(--off-white);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── NOTE BOX ── */
+  .note-box {
+    background: var(--pale-teal);
+    border: 1px solid var(--lt-teal);
+    border-radius: 3px;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.88rem;
+    margin: 0.85rem 0;
+    color: var(--navy);
+  }
+
+  .note-box strong {
+    color: var(--teal);
+  }
+
+  /* ── BODY TEXT ── */
+  .body-text {
+    font-size: 0.92rem;
+    color: var(--navy);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+  }
+
+  .body-text em {
+    color: var(--mid-gray);
+    font-style: italic;
+  }
+
+  /* ── SUB HEADS ── */
+  .sub-head {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 600;
+    margin: 1.4rem 0 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--pale-teal);
+  }
+
+  .sub-head:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* ── GOAL LIST ── */
+  .goal-list {
+    list-style: none;
+    margin: 0.75rem 0;
+  }
+
+  .goal-list li {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--pale-teal);
+  }
+
+  .goal-list li:last-child { border-bottom: none; }
+
+  .goal-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--teal);
+    font-weight: 600;
+    width: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Q&A BLOCKS ── */
+  .qa-list { margin: 0; }
+
+  .qa-item {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--pale-teal);
+    transition: background 0.15s;
+  }
+
+  .qa-item:last-child { border-bottom: none; }
+  .qa-item:nth-child(even) { background: var(--pale-teal); }
+  .qa-item:hover { background: #dff0f0; }
+
+  .qa-q {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .qa-a {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--navy);
+    line-height: 1.6;
+  }
+
+  /* ── OBJECTION TABLE ── */
+  .obj-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .obj-table thead tr {
+    background: var(--teal);
+  }
+
+  .obj-table thead th {
+    padding: 0.65rem 1rem;
+    text-align: left;
+    color: white;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .obj-table tbody tr {
+    border-bottom: 1px solid var(--pale-teal);
+  }
+
+  .obj-table tbody tr:nth-child(even) {
+    background: var(--pale-teal);
+  }
+
+  .obj-table td {
+    padding: 0.75rem 1rem;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .obj-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    width: 38%;
+    font-size: 0.85rem;
+  }
+
+  .obj-table td:last-child {
+    color: var(--navy);
+    font-size: 0.88rem;
+  }
+
+  /* ── BOOKING FORK ── */
+  .fork-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .fork-card {
+    background: var(--off-white);
+    border: 1px solid var(--light-gray);
+    border-radius: 3px;
+    padding: 1rem 1.1rem;
+  }
+
+  .fork-label {
+    font-size: 0.63rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .fork-card .script-line {
+    font-size: 0.95rem;
+  }
+
+  /* ── DIVIDER ── */
+  .teal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+    margin: 1.2rem 0;
+    border: none;
+  }
+
+  /* ── SCROLLBAR ── */
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(11,126,122,0.3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR NAV -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">STEMS Health</div>
+      <div class="doc-label">Leads Call Script</div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Before the Call</div>
+      <a class="nav-item" href="#before">Before You Pick Up</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">The Script</div>
+      <a class="nav-item" href="#opening">Opening</a>
+      <a class="nav-item" href="#step1">Step 1 — Contact Info</a>
+      <a class="nav-item" href="#step2">Step 2 — Understand Patient</a>
+      <a class="nav-item" href="#step3">Step 3 — Education</a>
+      <a class="nav-item" href="#step4">Step 4 — Common Questions</a>
+      <a class="nav-item" href="#step5">Step 5 — Booking</a>
+      <a class="nav-item" href="#step6">Step 6 — Close</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Reference</div>
+      <a class="nav-item" href="#objections">Objection Handling</a>
+    </div>
+
+    <div class="sidebar-footer">
+      Internal use only.<br>Not for distribution.<br>STEMS Health · Miami Beach
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">Inbound Leads</div>
+      <h1>Call Script</h1>
+      <div class="hero-meta">
+        <span>New Leads Manager</span>
+        <span>Version 1.0</span>
+        <span>STEMS Health, Miami Beach</span>
+      </div>
+    </div>
+
+    <!-- BEFORE YOU PICK UP -->
+    <section class="step-section" id="before">
+      <div class="section-header">
+        <span class="step-badge">Preparation</span>
+        <span class="section-title">Before You Pick Up</span>
+      </div>
+      <div class="section-body">
+        <p class="body-text">You are the first impression of a physician-led, premium practice. Every call should feel like a concierge service — calm, confident, knowledgeable. You are not selling. You are guiding a qualified patient toward the right next step.</p>
+        <hr class="teal-divider">
+        <p class="body-text"><strong>Goal of every call:</strong></p>
+        <ul class="goal-list">
+          <li><span class="goal-num">1</span><span>Capture contact information</span></li>
+          <li><span class="goal-num">2</span><span>Understand the patient's condition and intent</span></li>
+          <li><span class="goal-num">3</span><span>Educate briefly and clearly</span></li>
+          <li><span class="goal-num">4</span><span>Book a telemedicine consultation with Dr. Choxi</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- OPENING -->
+    <section class="step-section" id="opening">
+      <div class="section-header">
+        <span class="step-badge">Step 0</span>
+        <span class="section-title">Opening</span>
+      </div>
+      <div class="section-body">
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"Good morning / afternoon, this is [Name] with STEMS Health. How can I help you today?"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 1 -->
+    <section class="step-section" id="step1">
+      <div class="section-header">
+        <span class="step-badge">Step 1</span>
+        <span class="section-title">Capture Contact Information First</span>
+      </div>
+      <div class="section-body">
+        <p class="body-text">As soon as the patient identifies why they're calling, before going any further:</p>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"I'd love to help with that. Before we go any further, may I get your name, best email address, and a phone number — just in case we get disconnected?"</div>
+        </div>
+        <div class="note-box"><strong>Enter into Jane App:</strong> Full name, DOB, phone, address, email, sex.</div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step-section" id="step2">
+      <div class="section-header">
+        <span class="step-badge">Step 2</span>
+        <span class="section-title">Understand the Patient</span>
+      </div>
+      <div class="section-body">
+        <p class="body-text">Once information is captured, ask:</p>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"Can you tell me a little more about what you're dealing with — is this a specific joint or area, and do you have any imaging on file, like an MRI or X-ray?"</div>
+        </div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"And have you tried any other treatments so far — injections, surgery, physical therapy?"</div>
+        </div>
+        <div class="note-box"><strong>Listen for:</strong> Area of concern, chronicity, imaging status, prior treatments, how they heard about STEMS.</div>
+      </div>
+    </section>
+
+    <!-- STEP 3: EDUCATION -->
+    <section class="step-section" id="step3">
+      <div class="section-header">
+        <span class="step-badge">Step 3</span>
+        <span class="section-title">Education Block</span>
+      </div>
+      <div class="section-body">
+        <p class="body-text">Use the section below that matches what the patient is asking. Keep it conversational — one or two points at a time. You do not need to recite everything.</p>
+
+        <div class="sub-head">What We Do — Simple Overview</div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"STEMS Health is a regenerative medicine practice based in Miami Beach. We specialize in non-surgical, physician-administered treatments designed to support the body's own healing process — rather than masking pain or removing tissue. Everything is performed by Dr. Ankeet Choxi, who has deep experience with both orthopedic and aesthetic regenerative cases."</div>
+        </div>
+
+        <div class="sub-head">The Science — Plain Language</div>
+        <p class="body-text"><em>Use when a patient asks: "What is a stem cell?" / "What's the difference between PRP and stem cells?" / "What are MUSE cells?"</em></p>
+
+        <div class="script-block">
+          <div class="script-label">MSCs (Stem Cells)</div>
+          <div class="script-line">"Mesenchymal stem cells are your body's repair crew. Found in bone marrow, fat tissue, and umbilical cord. They work primarily by sending out signals that calm inflammation and encourage healing. Think of them as coaches — they direct everything around them."</div>
+        </div>
+
+        <div class="script-block">
+          <div class="script-label">MUSEcells™</div>
+          <div class="script-line">"MUSEcells are a rare, specialized population found within those MSCs. What makes them different is that they're stress-activated — when the body is under duress, they respond. They have the potential to become multiple tissue types: nerve, muscle, cartilage, skin. Rather than just coaching, they can step in and play. We are the only practice in the region offering them."</div>
+        </div>
+
+        <div class="script-block">
+          <div class="script-label">PRP</div>
+          <div class="script-line">"PRP is drawn from the patient's own blood, spun down to concentrate growth factors, and injected directly into the affected area. It's a strong anti-inflammatory tool — effective alone or as a complement to cell-based therapy."</div>
+        </div>
+
+        <div class="script-block">
+          <div class="script-label">BMAC</div>
+          <div class="script-line">"BMAC is bone marrow aspirate concentrate — we draw from the patient's own iliac crest, concentrate the regenerative cells, and use it at the treatment site. It's an autologous option, meaning it comes from you."</div>
+        </div>
+
+        <div class="sub-head">The Benefits</div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"Regenerative therapy is not a guaranteed fix, and we're always transparent about that. What it offers is a meaningful, non-surgical path for patients who haven't responded to conventional treatment — or who want to avoid surgery altogether. Most patients report reduced pain, improved function, and in many cases, durable results over months and years."</div>
+        </div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"Recovery is typically minimal — most patients return to normal activity within days to a couple of weeks depending on the protocol. This is very different from a surgical timeline."</div>
+        </div>
+
+        <div class="sub-head">The Sourcing</div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"The cells we use come from ethically sourced, full-term umbilical cord tissue — Wharton's jelly — donated with informed consent from healthy mothers following elective caesarean deliveries. No embryos are involved. Donors are thoroughly screened for infectious disease and health history before donation is accepted."</div>
+        </div>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"The tissue is processed by a licensed, FDA-registered lab here in the United States. The cells are tested for sterility, viability, and identity before they're ever released for clinical use."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: COMMON QUESTIONS -->
+    <section class="step-section" id="step4">
+      <div class="section-header">
+        <span class="step-badge">Step 4</span>
+        <span class="section-title">Handling Common Questions</span>
+      </div>
+      <div class="section-body" style="padding: 0;">
+        <div class="qa-list">
+
+          <div class="qa-item">
+            <div class="qa-q">"Is the lab FDA-registered and compliant?"</div>
+            <div class="qa-a">"Yes. The lab we work with is FDA-registered and operates under cGMP standards. All processing and testing follows federal guidelines for human cellular and tissue-based products under 21 CFR Part 1271. We only work with labs that meet that standard."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"How do I know the cells are actually alive and viable when injected?"</div>
+            <div class="qa-a">"Every batch is tested for cell viability before release — we require high viability thresholds before accepting any product. The cells are cryopreserved using validated protocols and shipped under temperature-controlled conditions. By the time they reach the treatment room, they've been confirmed viable and are thawed precisely on the day of your procedure."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"Where do the cells come from, and how are donors screened?"</div>
+            <div class="qa-a">"The cells come from umbilical cord tissue — Wharton's jelly — donated by healthy mothers after planned caesarean births. Donors are screened for a full panel of infectious diseases, including HIV and hepatitis, in line with FDA requirements. Medical and family history is reviewed. Only donors who pass that screening are accepted."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"What testing or certifications does the lab have?"</div>
+            <div class="qa-a">"The lab holds FDA registration and operates under cGMP protocols. Each batch undergoes sterility testing, identity confirmation, and viability analysis before release. Dr. Choxi is happy to address the specifics during your consultation."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"Has this product been used in published research or clinical trials?"</div>
+            <div class="qa-a">"Yes. MSCs from Wharton's jelly have been studied extensively in peer-reviewed literature across orthopedic, neurological, and inflammatory conditions. MUSEcells specifically have been the subject of clinical trials in Japan. Dr. Choxi can speak to the evidence base relevant to your specific condition."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"How is the product stored and transported? Where does it come from?"</div>
+            <div class="qa-a">"The cells are cryopreserved and shipped in validated, temperature-controlled containers by logistics partners experienced in biological transport. On the day of your procedure, the cells are thawed under precise conditions in the office. The entire cold chain is monitored and documented."</div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-q">"Can I see the Certificate of Analysis for my batch?"</div>
+            <div class="qa-a">"Yes — a Certificate of Analysis is available for every product we use. It documents the cell count, viability, sterility results, and identity markers for that specific lot. It's a reasonable request and one we're fully comfortable fulfilling."</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: BOOKING -->
+    <section class="step-section" id="step5">
+      <div class="section-header">
+        <span class="step-badge">Step 5</span>
+        <span class="section-title">Booking the Consultation</span>
+      </div>
+      <div class="section-body">
+        <p class="body-text">Once the patient is educated and engaged:</p>
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"The best next step is a telemedicine consultation with Dr. Choxi. He'll review your imaging, go through your history, and build a treatment plan specific to you — not a one-size-fits-all protocol. The consult is [INSERT PRICING]. Would you like to go ahead and schedule that?"</div>
+        </div>
+
+        <div class="fork-grid">
+          <div class="fork-card">
+            <div class="fork-label">If They Say Yes</div>
+            <div class="script-line">"Wonderful. I'll send you a brief intake form and a credit card authorization to hold your appointment. Once those are back, I'll also send instructions for forwarding your imaging to us. Please note — if we don't have your imaging before the appointment, we will need to reschedule."</div>
+          </div>
+          <div class="fork-card">
+            <div class="fork-label">If They Want to Think About It</div>
+            <div class="script-line">"Of course. I'll send you a brief overview of what we offer and Dr. Choxi's background so you have it on hand. Please feel free to call us back whenever you're ready — we're here."</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 6: CLOSE -->
+    <section class="step-section" id="step6">
+      <div class="section-header">
+        <span class="step-badge">Step 6</span>
+        <span class="section-title">Close</span>
+      </div>
+      <div class="section-body">
+        <div class="script-block">
+          <div class="script-label">Office</div>
+          <div class="script-line">"It was a pleasure speaking with you. You're in the right place, and Dr. Choxi is exactly the kind of physician you want reviewing this. We'll be in touch shortly with your intake forms. Have a wonderful day."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OBJECTIONS -->
+    <section class="step-section" id="objections">
+      <div class="section-header">
+        <span class="step-badge">Reference</span>
+        <span class="section-title">Objection Quick Reference</span>
+      </div>
+      <div class="section-body" style="padding: 0; overflow: hidden; border-radius: 0 0 3px 3px;">
+        <table class="obj-table">
+          <thead>
+            <tr>
+              <th>Objection</th>
+              <th>Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"Is this covered by insurance?"</td>
+              <td>Regenerative therapies are generally not covered. Most patients find the investment worthwhile given the avoidance of surgery or long-term medication. We're happy to walk you through pricing during the consultation.</td>
+            </tr>
+            <tr>
+              <td>"I've heard stem cells don't work."</td>
+              <td>A fair concern — the field has a lot of variation in quality. What sets us apart is physician administration, lab-grade sourcing, and a protocol tailored to your specific condition. Dr. Choxi can show you the evidence base for your case.</td>
+            </tr>
+            <tr>
+              <td>"Can I just come in without a consultation?"</td>
+              <td>Dr. Choxi requires a consultation first — imaging review is essential to building the right protocol. We don't offer walk-in treatments, and that's by design.</td>
+            </tr>
+            <tr>
+              <td>"Is this experimental?"</td>
+              <td>The therapies we use are derived from well-studied cell populations with significant peer-reviewed literature. Dr. Choxi will be direct with you about what the evidence supports for your condition.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Active nav state on scroll
+  const sections = document.querySelectorAll('.step-section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const match = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  navItems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(item.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
